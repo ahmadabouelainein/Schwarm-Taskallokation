@@ -5,11 +5,8 @@ import math
 import random
 import numpy as np
 import matplotlib.pyplot as plt
-from shapely.geometry import Point
-from shapely.ops import unary_union
-from matplotlib.patches import Polygon as MplPolygon
 import pandas as pd
-
+np.random.seed(42)
 from model import (
     sample_coverage_points,
     plan_tour,
@@ -120,7 +117,7 @@ def optimize_order_ga(start, pts, robot_id):
 # ────────────────────────────────────────────────────────────────────────────────
 if __name__ == "__main__":
     # fixed Voronoi partitions via GreedyNN
-    starts = np.random.RandomState(42).uniform(
+    starts = np.random.uniform(
         [area_bounds[0], area_bounds[2]],
         [area_bounds[1], area_bounds[3]],
         size=(n_robots, 2)
