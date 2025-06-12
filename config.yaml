@@ -8,7 +8,7 @@ area_bounds:
   y_max: 50
 
 # number of robots in swarm
-n_robots: 5
+n_robots: 7
 
 # per-robot exploration radius
 radius: 5.0
@@ -21,7 +21,7 @@ repeat_penalty: 20.0
 
 ga:
   # genetic algorithm parameters
-  pop_size: 200
-  generations: 300
+  pop_size: 1000
+  generations: 150
   elite_fraction: 0.2
   mut_rate: 0.05

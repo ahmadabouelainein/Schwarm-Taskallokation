@@ -7,7 +7,7 @@ from shapely.ops import unary_union
 from matplotlib.patches import Polygon as MplPolygon
 import math
 import time
-np.random.seed(0)
+np.random.seed(42)
 
 
 with open("config.yaml") as f:
@@ -93,7 +93,7 @@ def draw_solution(ax, starts, groups, radius, cmap):
                 alpha=0.3, zorder=1
             ))
         # tour path and start marker
-        ax.plot(tour[:,0], tour[:,1], '-', color=cmap(i), lw=1.5, zorder=2)
+        # ax.plot(tour[:,0], tour[:,1], '-', color=cmap(i), lw=1.5, zorder=2)
         ax.plot(start[0], start[1], 'o', color=cmap(i),
                 markersize=8, markeredgecolor='k', zorder=3)
 
@@ -117,6 +117,10 @@ if __name__ == "__main__":
     fig, ax = plt.subplots(figsize=(8,6))
     cmap = plt.cm.get_cmap('tab10', n_robots)
     draw_solution(ax, starts, allocator.assignments, radius, cmap)
+    for i, start in enumerate(starts):
+        pts = allocator.assignments[i]
+        tour = plan_tour(start, pts)
+        ax.plot(tour[:,0], tour[:,1], '-', color=cmap(i), lw=1.5, zorder=2)
     ax.set_xlim(area_bounds[0], area_bounds[1])
     ax.set_ylim(area_bounds[2], area_bounds[3])
     ax.set_aspect('equal'); ax.grid(True)
