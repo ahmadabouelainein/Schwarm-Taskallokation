@@ -1,11 +1,36 @@
 
+import yaml 
 import numpy as np
 import matplotlib.pyplot as plt
 from shapely.geometry import Point
 from shapely.ops import unary_union
 from matplotlib.patches import Polygon as MplPolygon
 import math
+import time
 np.random.seed(0)
+
+
+with open("config.yaml") as f:
+    cfg = yaml.safe_load(f)
+
+area_bounds    = (
+    cfg["area_bounds"]["x_min"],
+    cfg["area_bounds"]["x_max"],
+    cfg["area_bounds"]["y_min"],
+    cfg["area_bounds"]["y_max"]
+)
+n_robots       = cfg["n_robots"]
+radius         = cfg["radius"]
+turn_coef      = cfg["turn_coef"]
+repeat_penalty = cfg["repeat_penalty"]
+
+ga_params      = cfg["ga"]
+pop_size       = ga_params["pop_size"]
+generations    = ga_params["generations"]
+elite_fraction = ga_params["elite_fraction"]
+mut_rate       = ga_params["mut_rate"]
+
+
 def sample_coverage_points(bounds, radius):
     """
     Sample waypoints so that circles of given radius cover the rectangular bounds.
@@ -74,13 +99,12 @@ def draw_solution(ax, starts, groups, radius, cmap):
 
 if __name__ == "__main__":
     # parameters
-    area_bounds = (0, 100, 0, 50)
-    n_robots    = 5
-    radius      = 5.0
+    # area_bounds = (0, 100, 0, 50)
+    # n_robots    = 5
+    # radius      = 5.0
 
     # random starts + sample points
-    rng    = np.random.RandomState(42)
-    starts = rng.uniform([area_bounds[0], area_bounds[2]],
+    starts = np.random.uniform([area_bounds[0], area_bounds[2]],
                          [area_bounds[1], area_bounds[3]],
                          size=(n_robots, 2))
     points = sample_coverage_points(area_bounds, radius)
@@ -97,6 +121,6 @@ if __name__ == "__main__":
     ax.set_ylim(area_bounds[2], area_bounds[3])
     ax.set_aspect('equal'); ax.grid(True)
     ax.set_title("Initial GreedyNN Allocation")
-    plt.savefig("output/initial.png", dpi=300)
+    plt.savefig(f"output/initial_{time.time()}.png", dpi=300)
     plt.close()
 

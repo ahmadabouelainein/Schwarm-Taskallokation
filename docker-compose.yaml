@@ -2,10 +2,11 @@ version: '3.8'
 services:
   swarm-explorer:
     build: .
-    container_name: swarm_explorer
+    container_name: swarm-explorer
+    user: "${UID}:${GID}"
     volumes:
-      - ./:/app        # mount entire project
-      - ./output:/app/output  # ensure output folder is shared
+      - ./:/app
+      - ./output:/app/output
     working_dir: /app
+    stdin_open: true
     tty: true
-    command: bash

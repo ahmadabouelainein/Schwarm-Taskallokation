@@ -1,5 +1,4 @@
-# optimization.py
-
+import yaml
 import numpy as np
 import matplotlib.pyplot as plt
 from shapely.geometry import Point
@@ -7,13 +6,33 @@ from shapely.ops import unary_union
 import math
 import random
 import pandas as pd
-
+import time
 from model import (
     sample_coverage_points,
     plan_tour,
     GreedyNearestAllocator,
     draw_solution
 )
+
+with open("config.yaml") as f:
+    cfg = yaml.safe_load(f)
+
+area_bounds    = (
+    cfg["area_bounds"]["x_min"],
+    cfg["area_bounds"]["x_max"],
+    cfg["area_bounds"]["y_min"],
+    cfg["area_bounds"]["y_max"]
+)
+n_robots       = cfg["n_robots"]
+radius         = cfg["radius"]
+turn_coef      = cfg["turn_coef"]
+repeat_penalty = cfg["repeat_penalty"]
+
+ga_params      = cfg["ga"]
+pop_size       = ga_params["pop_size"]
+generations    = ga_params["generations"]
+elite_fraction = ga_params["elite_fraction"]
+mut_rate       = ga_params["mut_rate"]
 
 # ────────────────────────────────────────────────────────────────────────────────
 def compute_path_turn(tour):
@@ -102,12 +121,12 @@ def genetic_optimize(starts, points, radius,
 # ────────────────────────────────────────────────────────────────────────────────
 if __name__ == "__main__":
     # problem setup
-    area_bounds    = (0, 100, 0, 50)
-    n_robots       = 5
-    radius         = 5.0
-    turn_coef      = 2.0
-
-    rng    = np.random.RandomState(42)
+    # area_bounds    = (0, 100, 0, 50)
+    # n_robots       = 5
+    # radius         = 5.0
+    # turn_coef      = 2.0
+    print("Initialzing Optimizer")
+    rng    = np.random.RandomState(0)
     starts = rng.uniform([area_bounds[0], area_bounds[2]],
                          [area_bounds[1], area_bounds[3]],
                          size=(n_robots, 2))
@@ -120,10 +139,10 @@ if __name__ == "__main__":
     # -- GA Optimize --
     best_assign, best_cost = genetic_optimize(
         starts, points, radius,
-        pop_size=250, generations=300,
+        pop_size=pop_size, generations=generations,
         turn_coef=turn_coef,
-        elite_fraction=0.2,
-        mut_rate=0.05
+        elite_fraction=elite_fraction,
+        mut_rate=mut_rate
     )
 
     # helpers to compute detailed overlap & cost
@@ -183,7 +202,7 @@ if __name__ == "__main__":
         ax.set_ylim(area_bounds[2], area_bounds[3])
         ax.set_aspect('equal'); ax.grid(True)
 
-    plt.savefig("output/initial_vs_optimized.png", dpi=300)
+    plt.savefig(f"output/initial_vs_optimized_{time.time()}.png", dpi=300)
     plt.close()
 
 
