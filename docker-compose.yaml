@@ -3,7 +3,6 @@ services:
   swarm-explorer:
     build: .
     container_name: swarm-explorer
-    user: "${UID}:${GID}"
     volumes:
       - ./:/ws
       - ./output:/ws/output
