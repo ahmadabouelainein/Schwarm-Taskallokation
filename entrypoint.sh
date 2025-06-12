@@ -2,7 +2,7 @@
 set -e
 
 # ensure output directory exists
-mkdir -p /app/output
+mkdir -p /ws/output
 
 # if no arguments passed, drop into a bash shell
 if [ $# -eq 0 ]; then

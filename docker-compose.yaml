@@ -5,8 +5,8 @@ services:
     container_name: swarm-explorer
     user: "${UID}:${GID}"
     volumes:
-      - ./:/app
-      - ./output:/app/output
-    working_dir: /app
+      - ./:/ws
+      - ./output:/ws/output
+    working_dir: /ws
     stdin_open: true
     tty: true

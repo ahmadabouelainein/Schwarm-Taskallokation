@@ -21,7 +21,7 @@ repeat_penalty: 20.0
 
 ga:
   # genetic algorithm parameters
-  pop_size: 40
-  generations: 80
+  pop_size: 200
+  generations: 300
   elite_fraction: 0.2
   mut_rate: 0.05
