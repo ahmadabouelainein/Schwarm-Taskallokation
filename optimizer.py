@@ -7,7 +7,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 np.random.seed(42)
-from model import (
+from allocator import (
     sample_coverage_points,
     plan_tour,
     GreedyNearestAllocator,

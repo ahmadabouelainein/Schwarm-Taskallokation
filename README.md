@@ -1,3 +1,126 @@
+
+For english version click [here](#robotic-coverage-and-tour-planning)
+
+# Robotische Abdeckung und Tourenplanung
+
+Dieses Projekt bietet zwei Python-Skripte zur Generierung und Optimierung von Abdeckungstouren für mehrere Roboter in einem 2D-Bereich.
+
+* **Rasterbasierte Abtastung** sorgt für vollständige Abdeckung, indem Wegpunkte so platziert werden, dass Kreise mit einem gegebenen Radius das Gebiet überdecken.
+* **Gierige Zuordnung** weist Wegpunkte dem jeweils nächstgelegenen Roboter zu, um eine erste Lösung zu erhalten.
+* **Nearest-Neighbor-TSP-Heuristik** erstellt für jeden Roboter eine Anfangstour.
+* **Genetische Algorithmus-Optimierung** verfeinert die Besuchsreihenfolge, um kombinierte Weglängen- und Kurvenkosten zu minimieren.
+* **Visualisierung** vereinigt Abdeckungsregionen und zeichnet Touren mit Matplotlib.
+
+## Anforderungen
+
+Alle Abhängigkeiten sind in `requirements.txt` aufgelistet:
+
+```bash
+pip install -r requirements.txt
+```
+
+## Konfiguration
+
+Bearbeiten Sie `config.yaml`, um Parameter festzulegen:
+
+* **area\_bounds**: `[x_min, x_max, y_min, y_max]` definiert die Gebietsgrenzen.
+* **n\_robots**: Anzahl der Roboter.
+* **radius**: Abdeckungsradius jedes Roboters.
+* **turn\_coef**: Gewichtung der Kurvenkosten im genetischen Algorithmus.
+* **ga**:
+
+  * `pop_size`: Populationsgröße.
+  * `generations`: Anzahl der GA-Iterationen.
+  * `mut_rate`: Mutationswahrscheinlichkeit.
+
+## Skripte
+
+### `allocator.py`
+
+Führt aus:
+
+1. Rasterbasierte Abtastung der Abdeckungspunkte.
+2. Gierige Nearest-Neighbor-Zuordnung der Punkte zu Robotern.
+3. Tourenplanung per Nearest-Neighbor-Heuristik.
+4. Visualisierung der Anfangstouren und Speicherung als `output/initial_<timestamp>.png`.
+
+> **Warum diese Berechnung?**
+> Der Kurvenwinkel θᵢ wird aus dem Skalarprodukt aufeinanderfolgender Streckensegmente berechnet:
+>
+> θᵢ = arccos( ((pᵢ - pᵢ₋₁) · (pᵢ₋₁ - pᵢ₋₂)) / (||pᵢ - pᵢ₋₁|| \* ||pᵢ₋₁ - pᵢ₋₂||) ).
+>
+> Diese Formel misst die Richtungsänderung und bestraft scharfe Kurven, um glattere, effizientere Pfade zu fördern.
+
+Ausführen mit:
+
+```bash
+python allocator.py
+```
+
+### `optimizer.py`
+
+Optimiert jede Robotertour durch:
+
+1. Berechnung der Anfangstourkosten: Weglänge plus Kurvenwinkel-Strafe.
+2. Ausführung eines genetischen Algorithmus mit 10 % Elitismus, Ein-Punkt-Crossover und Tauschmutation.
+3. Gegenüberstellung von Anfangs- und optimierten Touren in `output/initial_vs_order-optimized_<timestamp>.png`.
+4. Ausgabe einer Tabelle mit Kostenvergleich pro Roboter.
+
+#### Kostenfunktion
+
+Für eine Tour \$T=(p\_0,\dots,p\_n)\$ gilt:
+
+$$
+C(T)=\sum_{i=1}^n ||p_i - p_{i-1}|| + \lambda \sum_{i=2}^n \theta_i
+$$
+
+wobei \$\theta\_i\$ der Kurvenwinkel am Punkt \$p\_{i-1}\$ ist und \$\lambda\$ (`turn_coef`) die Gewichtung darstellt.
+
+Ausführen mit:
+
+```bash
+python optimizer.py
+```
+
+## Dateistruktur
+
+```
+├── allocator.py           # Greedy-Abdeckungszuordnung
+├── optimizer.py           # GA-basierte Tourenoptimierung
+├── config.yaml            # Parameterdefinitionen
+├── requirements.txt       # Python-Abhängigkeiten
+├── Dockerfile             # Definition des Container-Images
+├── docker-compose.yaml    # Konfiguration für Docker Compose
+├── entrypoint.sh          # Einstiegsskript für den Container
+├── LICENSE                # Projektlizenz
+├── output/                # Verzeichnis für generierte Grafiken
+└── README.md              # Projektdokumentation
+```
+
+## Docker-Setup
+
+Das Projekt nutzt Docker Compose (`docker-compose.yaml`), um eine reproduzierbare Umgebung bereitzustellen. Beim Ausführen von:
+
+```bash
+docker-compose up --build
+```
+
+wird:
+
+1. Ein Python-3.9-Image mit allen Abhängigkeiten erstellt.
+2. Der Quellcode und das `output/`-Verzeichnis im Container bereitgestellt.
+3. Ein interaktives Terminal mit dem Einstiegsskript gestartet.
+
+Im Container können Sie dann:
+
+* `python allocator.py` oder `python optimizer.py` ausführen, um die Workflows zu starten.
+* Keine Argumente übergeben, um eine Bash-Shell zu öffnen.
+
+## Lizenz
+
+Dieses Projekt steht unter der MIT-Lizenz. Nutzen und passen Sie den Code gerne für Ihre eigenen Anforderungen in der robotischen Abdeckung und Tourenplanung an.
+
+
 # Robotic Coverage and Tour Planning
 
 This repository provides Python scripts for planning coverage tours and optimizing robot routes in a 2D rectangular area. It includes:
@@ -66,85 +189,71 @@ ga:
 
 ## Scripts
 
-### 1. Initial Greedy Allocation (`alloctor.py`)
+### 1. Coverage Allocation (`allocator.py`)
 
-Generates an initial allocation of coverage waypoints to each robot and visualizes the greedy tours.
+Performs grid‐based sampling of coverage points, assigns them to robots using a greedy nearest‐neighbor allocator, and visualizes the initial tours.
 
-**Usage**:
+**How to run:**
 
 ```bash
-python alloctor.py
+python allocator.py
 ```
 
-Produces:`output/initial_<timestamp>.png`
-
-See [Initial Greedy Allocation](#scripts-1-initial-greedy-allocation-mainpy) above for details.
+This will generate a figure of the initial coverage allocation and save it under the `output/` directory.
 
 ---
 
-### 2. GA‐Based Tour Optimization (`optimizer.py`)
+### 2. Route Optimization (`optimizer.py`)
 
-Improves the visitation order within each robot’s assigned waypoints to reduce travel length and turning angle costs.
+#### Cost Function
 
-**Usage**:
+For a robot tour $ T=(p_0, p_1, \ldots, p_n) $ starting at $ p_0 $, the total cost is defined as:
+
+$$
+C(T) = \sum_{i=1}^{n} \lVert p_i - p_{i-1} \rVert + \ \lambda \sum_{i=2}^{n} \theta_i
+$$
+
+$$ \theta_i = \arccos\bigl( \frac{(p_i - p_{i-1}) \cdot (p_{i-1} - p_{i-2})}{\lVert p_i - p_{i-1} \rVert , \lVert p_{i-1} - p_{i-2} \rVert} \bigr)\ 
+$$
+
+
+where:
+* $ \lVert p_i - p_{i-1} \rVert\ $ is the Euclidean distance between consecutive waypoints.
+* The turning angle $ \theta_i$ is computed at $p_{i-1}$ from the dot product between consecutive path segments.
+* $\lambda $ corresponds to the weighting in the GA.
+
+**How to run:**
 
 ```bash
 python optimizer.py
 ```
 
-This script will:
+Process:
 
-1. Load parameters and bounds from `config.yaml`.
-2. Sample random start positions for `n_robots` and generate coverage waypoints.
-3. Allocate waypoints to robots using `GreedyNearestAllocator` (fixed Voronoi partition).
-4. For each robot:
+1. Load configuration and sample start positions.
+2. Allocate coverage waypoints via the greedy allocator.
+3. For each robot:
 
-   * Compute the initial tour with `plan_tour()` and calculate its cost (`length + turn_coef × total_turn_angle`).
-   * Run a GA (`optimize_order_ga`) with 10% elitism to find a better visit order.
-   * Record initial and optimized costs.
-5. Visualize side‐by‐side plots of initial vs. optimized tours, saving to `output/initial_vs_order-optimized_<timestamp>.png`.
-6. Print a per‐robot cost comparison table via Pandas.
+   * Compute the cost of the initial tour.
+   * Run the GA optimizer to reduce combined distance and turning cost.
+4. Produce a side‐by‐side visualization of initial vs. optimized tours in `output/`.
+5. Print a per‐robot cost comparison table to the console.## Outputs
 
-**Key Functions**:
-
-* `compute_path_turn(tour)`:
-
-  * Computes total path length and cumulative turning angle for a given ordered sequence of points.
-
-* `optimize_order_ga(start, pts, robot_id)`:
-
-  * Implements a simple GA to minimize `length + turn_coef × angle`.
-  * Uses:
-
-    * 10% elitism
-    * Single‐point crossover
-    * Swap mutation with probability `mut_rate`
-  * Prints best cost per generation.
-  * Returns the best ordering and its cost.
-
-* `GreedyNearestAllocator` / `plan_tour` / `draw_solution`:
-
-  * As described above in the initial allocation script.
-
-## Outputs
-
-* \`\`: Visualization of greedy allocation.
-* \`\`: Comparison of initial vs. GA‐optimized tours.
-* **Console**: Per‐robot cost comparison table.
+* **`output/initial_<timestamp>.png`**: Initial greedy coverage tours.
+* **`output/initial_vs_order-optimized_<timestamp>.png`**: Comparison of tours before and after GA optimization.
+* **Console**: Tabulated cost comparison for each robot.
 
 ## File Structure
 
 ```
-├── allocator.py           # Greedy coverage allocation script
-├── optimizer.py           # GA‐based route optimization script
 ├── config.yaml            # Parameter definitions
-├── requirements.txt       # Python dependencies
-├── Dockerfile             # Container image definition
-├── docker-compose.yaml    # Service configuration for Docker Compose
-├── entrypoint.sh          # Container entrypoint script
-├── LICENSE                # Project license
+├── requirements.txt       # Project dependencies
+├── main.py                # Initial greedy allocation entry point
+├── optimize_tours.py      # GA‐based tour optimization script
+├── coverage.py            # Sampling, allocation, routing, and visualization modules
+├── model.py               # Core functions and classes (sample_coverage_points, plan_tour, etc.)
 ├── output/                # Generated figures
-└── README.md              # This documentation
+└── README.md              # Project documentation
 ```
 
 ## Docker Setup
@@ -157,7 +266,7 @@ This project leverages containerization to ensure a reproducible environment and
 
 3. **Docker Compose file**: Orchestrates the single “swarm-explorer” service. It builds the image, mounts the project directory (for live code editing) and the output folder, and keeps the container in interactive mode. With this setup, you can easily launch the container, execute any of the Python entry points (`main.py`, `optimize_tours.py`, etc.), and have generated outputs persisted locally.
 
-**How it works together:** When you run `docker compose up --build`, Docker Compose will:
+**How it works together:** When you run `docker-compose up --build`, Docker Compose will:
 
 * Build the custom image as defined in the Dockerfile.
 * Mount your source code and `output` directory into `/ws` inside the container.
