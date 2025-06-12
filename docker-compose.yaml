@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  swarm-explorer:
+    build: .
+    container_name: swarm_explorer
+    volumes:
+      - ./:/app        # mount entire project
+      - ./output:/app/output  # ensure output folder is shared
+    working_dir: /app
+    tty: true
+    command: bash

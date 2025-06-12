@@ -183,8 +183,9 @@ if __name__ == "__main__":
         ax.set_ylim(area_bounds[2], area_bounds[3])
         ax.set_aspect('equal'); ax.grid(True)
 
-    plt.tight_layout()
-    plt.show()
+    plt.savefig("output/initial_vs_optimized.png", dpi=300)
+    plt.close()
+
 
     # -- Detailed Tables --
     print("\nInitial GreedyNN Detailed:\n")
