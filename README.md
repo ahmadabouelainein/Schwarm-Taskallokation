@@ -24,6 +24,10 @@ All parameters are read from **`config.yaml`** – *configure once, run anywhere
 
 **Rule of thumb** – use *balanced* when equal workload matters, *greedy* when speed matters and uneven loads are acceptable.
 
+![Balanced Allocation example](output/balanced_allocator_1749909169.png)
+
+![Greedy Allocation example](output/greedy_allocator_1749909157.png)
+
 ### Initial‑tour builders
 
 | Builder                    | Principle                                                | When to use                                   |
@@ -36,6 +40,9 @@ All parameters are read from **`config.yaml`** – *configure once, run anywhere
 | Pipeline               | Optimisation steps                                    | Cost used | Typical runtime            | Best for                       |
 | ---------------------- | ----------------------------------------------------- | --------- | -------------------------- | ------------------------------ |
 | **Initial Tour + 2‑opt** | Scanline ordering → local 2‑opt swaps (distance only) | Distance  | ✧✧ Fast (sub‑second/robot) | Quick refinement, large swarms |
+<img src="output/balanced_nn_2opt_1749913621.png" width="45">
+<img src="output/balanced_serpentine_2opt_1749913715.png" width="45">
+
 
 ---
 
