@@ -4,5 +4,4 @@ shapely
 pandas
 PyYAML
 tabulate
-numba
 tqdm
