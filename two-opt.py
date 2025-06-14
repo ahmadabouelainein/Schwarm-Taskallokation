@@ -35,7 +35,8 @@ def serpentine_idx(pts, tol):
         if abs(pts[n, 1] - pts[p, 1]) < tol:
             cur.append(n)
         else:
-            rows.append(cur); cur = [n]
+            rows.append(cur)
+            cur = [n]
     rows.append(cur)
     for r in range(1, len(rows), 2):
         rows[r] = rows[r][::-1]
@@ -49,7 +50,9 @@ def nn_tour(start, pts):
     order, cur, pool = [], np.array(start), pts.tolist()
     while pool:
         nxt = min(pool, key=lambda p: np.linalg.norm(np.array(p) - cur))
-        order.append(tuple(nxt)); pool.remove(nxt); cur = np.array(nxt)
+        order.append(tuple(nxt))
+        pool.remove(nxt)
+        cur = np.array(nxt)
     return np.vstack(([start], order))
 
 
@@ -65,7 +68,8 @@ def build_cand(d, k):
 def two_opt(order, d, cand):
     n, improved = len(order), True
     while improved:
-        pos = {n: i for i, n in enumerate(order)}; improved = False
+        pos = {n: i for i, n in enumerate(order)}
+        improved = False
         for i in range(n - 2):
             a, b = order[i], order[i + 1]
             for c in cand[a]:
@@ -74,7 +78,9 @@ def two_opt(order, d, cand):
                     continue
                 c_, d_ = order[j], order[j + 1]
                 if d[a, b] + d[c_, d_] - d[a, c_] - d[b, d_] > 1e-9:
-                    order[i + 1 : j + 1] = order[i + 1 : j + 1][::-1]; improved = True; break
+                    order[i + 1 : j + 1] = order[i + 1 : j + 1][::-1]
+                    improved = True
+                    break
             if improved:
                 break
 
@@ -114,9 +120,11 @@ def main():
     )
     lattice = sample_coverage_points(AREA_BOUNDS, RADIUS)
     if ALLOC_TYPE.startswith("greedy"):
-        alloc = GreedyNearestAllocator(starts, lattice); tag = "greedy"
+        alloc = GreedyNearestAllocator(starts, lattice)
+        tag = "greedy"
     else:
-        alloc = BalancedKMeansAllocator(starts, lattice); tag = "balanced"
+        alloc = BalancedKMeansAllocator(starts, lattice)
+        tag = "balanced"
     alloc.allocate()
 
     init_paths, opt_paths = [], []
@@ -129,7 +137,8 @@ def main():
             serp_idx = serpentine_idx(pts, tol=RADIUS * 0.75)
             init_tour = np.vstack(([starts[rid]], pts[serp_idx]))
         init_paths.append(init_tour)
-        init_d += dist_sum(init_tour); init_a += turn_sum(init_tour)
+        init_d += dist_sum(init_tour)
+        init_a += turn_sum(init_tour)
         xy = init_tour
         dmat = build_dist(xy)
         cand = build_cand(dmat, K)
@@ -137,7 +146,8 @@ def main():
         two_opt(order, dmat, cand)
         opt_tour = xy[order]
         opt_paths.append(opt_tour)
-        opt_d += dist_sum(opt_tour); opt_a += turn_sum(opt_tour)
+        opt_d += dist_sum(opt_tour)
+        opt_a += turn_sum(opt_tour)
 
     init_ov = overlap_area(init_paths)
     opt_ov = overlap_area(opt_paths)
@@ -150,10 +160,13 @@ def main():
         draw_solution(ax, starts, alloc.assignments, RADIUS, cmap)
         for r, p in enumerate(paths):
             ax.plot(p[:, 0], p[:, 1], "-", color=cmap(r), lw=1.3)
-        ax.set_aspect("equal"); ax.set_title(ttl); ax.grid(True, alpha=0.3)
+        ax.set_aspect("equal")
+        ax.set_title(ttl)
+        ax.grid(True, alpha=0.3)
     plt.tight_layout()
     out = Path("output") / f"{tag}_{INIT_TYPE}_2opt_{int(time.time())}.png"
-    plt.savefig(out, dpi=300); plt.close()
+    plt.savefig(out, dpi=300)
+    plt.close()
     print(f"[INFO] figure saved → {out}")
 
 

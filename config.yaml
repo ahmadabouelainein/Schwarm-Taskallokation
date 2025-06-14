@@ -11,6 +11,6 @@ radius: 2.0
 
 # Allocation Params
 allocator_type: balanced   # greedy or balanced
-start_bound_div: 5         # narrower and shorter area to spawn the robots (1: No narrowing, 10: Max narrowing)
+start_bound_div: 5         # more condensed area to spawn the robots (1: No condensing, 10: Max condensing)
 
-init_tour_type: serpentine # nn or serpentine
+init_tour_type: nn # nn or serpentine
