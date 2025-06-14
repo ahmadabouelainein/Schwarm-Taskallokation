@@ -162,6 +162,33 @@ Figures remain in `output/` on the host.
 
 ---
 
+## Technique comparison
+
+### Allocation methods
+
+| Method               | Core idea                                                                         | Strengths                        | Trade‑offs                                                                             |
+| -------------------- | --------------------------------------------------------------------------------- | -------------------------------- | -------------------------------------------------------------------------------------- |
+| **Balanced k‑means** | Iteratively moves centroids until each robot centre balances the assigned points. | Even workload, compact clusters. | Slightly slower (few dozen iterations); centroids can drift from real start positions. |
+| **Greedy nearest**   | Assigns every waypoint to the geographically closest start.                       | Ultra‑fast, no iterations.       | One robot can receive many more points; cluster shape may be elongated.                |
+
+**Rule of thumb** – use *balanced* when you need equal work per robot, *greedy* when speed matters and uneven loads are acceptable.
+
+### Initial‑tour builders
+
+| Builder                    | Principle                                                | When to use                                   |
+| -------------------------- | -------------------------------------------------------- | --------------------------------------------- |
+| **Serpentine**             | Lexicographic scan‑line; alternates direction every row. | Grid‑like layouts, predictable order.         |
+| **NN (nearest‑neighbour)** | Greedily visits the closest unvisited waypoint.          | Irregular point clouds, shorter raw distance. |
+
+### Tour‑optimisation pipelines
+
+| Pipeline               | Optimisation steps                                                    | Cost used                | Typical runtime                                       | Best for                                   |
+| ---------------------- | --------------------------------------------------------------------- | ------------------------ | ----------------------------------------------------- | ------------------------------------------ |
+| **Serpentine + 2‑opt** | Scanline ordering → local 2‑opt swaps (distance only).                | Distance                 | ✧✧ Fast (sub‑second per robot)                        | Quick refinement, large swarms.            |
+| **Genetic algorithm**  | Random population → crossover / mutation → elitism (distance + turns) | Distance + turning angle | ✧ Slower (seconds–minutes depending on `generations`) | High‑quality paths when turn cost matters. |
+
+---
+
 ## Robotische Abdeckung und Tourenplanung
 
 Dieser Abschnitt bietet eine deutschsprachige Zusammenfassung. Wenn Sie Englisch bevorzugen, scrollen Sie nach oben.
