@@ -227,7 +227,7 @@ Erzeugte Bilder landen unter **`output/`** (Datum + Uhrzeit im Dateinamen).
 
 | Pipeline               | Schritte                                           | Kostenmaß | Laufzeit        | Geeignet für                           |
 | ---------------------- | -------------------------------------------------- | --------- | --------------- | -------------------------------------- |
-| **Serpentine + 2‑Opt** | Zeilen‑Sortierung → lokale 2‑Opt‑Tausche (Distanz) | Distanz   | ✧✧ Sehr schnell | Schnelle Verbesserungen, viele Roboter |
+| **Initial Tour + 2‑Opt** | Zeilen‑Sortierung → lokale 2‑Opt‑Tausche (Distanz) | Distanz   | ✧✧ Sehr schnell | Schnelle Verbesserungen, viele Roboter |
 
 ---
 
