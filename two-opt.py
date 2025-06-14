@@ -164,6 +164,7 @@ def main():
         ax.set_title(ttl)
         ax.grid(True, alpha=0.3)
     plt.tight_layout()
+    fig.suptitle(f"{tag}-allocation {INIT_TYPE}-based initial tou 2-opt Area Coverage", fontsize=16)
     out = Path("output") / f"{tag}_{INIT_TYPE}_2opt_{int(time.time())}.png"
     plt.savefig(out, dpi=300)
     plt.close()

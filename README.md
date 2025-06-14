@@ -39,13 +39,13 @@ All parameters are read from **`config.yaml`** – *configure once, run anywhere
 | ---------------------- | ----------------------------------------------------- | --------- | -------------------------- | ------------------------------ |
 | **Initial Tour + 2‑opt** | Scanline ordering → local 2‑opt swaps (distance only) | Distance  | ✧✧ Fast (sub‑second/robot) | Quick refinement, large swarms |
 
-![2-Opt improved Coverage Using balanced Allocation with NN initial tour](output/balanced_nn_2opt_1749913621.png)
+![2-Opt improved Coverage Using balanced Allocation with NN initial tour](output/balanced_nn_2opt_1749921179.png)
 
-![2-Opt improved Using balanced Allocation with Serpentine initial tour](output/balanced_serpentine_2opt_1749913715.png)
+![2-Opt improved Using balanced Allocation with Serpentine initial tour](output/balanced_serpentine_2opt_1749921200.png)
 
-![2-Opt improved Coverage Using greedy NN Allocation with NN initial tour](output/greedy_nn_2opt_1749920345.png)
+![2-Opt improved Coverage Using greedy NN Allocation with NN initial tour](output/greedy_nn_2opt_1749921214.png)
 
-![2-Opt improved Using greedy nn Allocation with Serpentine initial tour](output/greedy_serpentine_2opt_1749920268.png.png)
+![2-Opt improved Using greedy nn Allocation with Serpentine initial tour](output/greedy_serpentine_2opt_1749921206.png)
 
 ---
 
