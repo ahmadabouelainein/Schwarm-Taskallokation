@@ -1,27 +1,27 @@
 # config.yaml
 
-# rectangular area bounds
+# Problem Definition
 area_bounds:
   x_min: 0
   x_max: 100
   y_min: 0
   y_max: 50
-
-# number of robots in swarm
 n_robots: 7
+radius: 2.0
 
-# per-robot exploration radius
-radius: 5.0
+# Allocation Params
+allocator_type: balanced   # greedy or balanced
+start_bound_div: 5         # narrower and shorter area to spawn the robots (1: No narrowing, 10: Max narrowing)
 
-# turn penalty coefficient (cost per radian)
+init_tour_type: serpentine # nn or serpentine
+
+# GA cost function params
 turn_coef: 2.0
-
-# repeat/overlap penalty (if used elsewhere)
 repeat_penalty: 20.0
 
 ga:
-  # genetic algorithm parameters
-  pop_size: 1000
+  # GA params
+  pop_size: 200
   generations: 150
   elite_fraction: 0.2
   mut_rate: 0.05
