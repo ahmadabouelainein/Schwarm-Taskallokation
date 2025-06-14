@@ -14,14 +14,3 @@ allocator_type: balanced   # greedy or balanced
 start_bound_div: 5         # narrower and shorter area to spawn the robots (1: No narrowing, 10: Max narrowing)
 
 init_tour_type: serpentine # nn or serpentine
-
-# GA cost function params
-turn_coef: 2.0
-repeat_penalty: 20.0
-
-ga:
-  # GA params
-  pop_size: 200
-  generations: 150
-  elite_fraction: 0.2
-  mut_rate: 0.05
