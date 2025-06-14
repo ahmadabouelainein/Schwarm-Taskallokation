@@ -132,6 +132,7 @@ def main():
     draw_solution(ax, starts, allocator.assignments, RADIUS, cmap)
     ax.set_xlim(AREA_BOUNDS[0], AREA_BOUNDS[1])
     ax.set_ylim(AREA_BOUNDS[2], AREA_BOUNDS[3])
+    ax.set_title(f"{tag} allocation")
     ax.set_aspect("equal")
     ax.grid(True)
     fig.tight_layout()
