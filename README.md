@@ -22,9 +22,9 @@ All parameters are read from **`config.yaml`** – *configure once, run anywhere
 | **Balanced k‑means** | Iteratively moves centroids until each robot centre balances the assigned points. | Even workload, compact clusters. | Slightly slower (few dozen iterations); centroids can drift from real start positions. |
 | **Greedy nearest**   | Assigns every waypoint to the geographically closest start.                       | Ultra‑fast, no iterations.       | One robot can receive many more points; cluster shape may be elongated.                |
 
-![Balanced Allocation example](output/balanced_allocator_1749920852.png)
+![Balanced Allocation example](output/balanced_allocator_1749987001.png)
 
-![Greedy Allocation example](output/greedy_allocator_1749920782.png)
+![Greedy Allocation example](output/greedy_allocator_1749986994.png)
 
 ### Initial‑tour builders
 
@@ -39,13 +39,13 @@ All parameters are read from **`config.yaml`** – *configure once, run anywhere
 | ---------------------- | ----------------------------------------------------- | --------- | -------------------------- | ------------------------------ |
 | **Initial Tour + 2‑opt** | Scanline ordering → local 2‑opt swaps (distance only) | Distance  | ✧✧ Fast (sub‑second/robot) | Quick refinement, large swarms |
 
-![2-Opt improved Coverage Using balanced Allocation with NN initial tour](output/balanced_nn_2opt_1749921346.png)
+![2-Opt improved Coverage Using balanced Allocation with NN initial tour](output/balanced_nn_2opt_1749987009.png)
 
-![2-Opt improved Using balanced Allocation with Serpentine initial tour](output/balanced_serpentine_2opt_1749921352.png)
+![2-Opt improved Using balanced Allocation with Serpentine initial tour](output/balanced_serpentine_2opt_1749987004.png)
 
-![2-Opt improved Coverage Using greedy NN Allocation with NN initial tour](output/greedy_nn_2opt_1749921337.png)
+![2-Opt improved Coverage Using greedy NN Allocation with NN initial tour](output/greedy_nn_2opt_1749987022.png)
 
-![2-Opt improved Using greedy nn Allocation with Serpentine initial tour](output/greedy_serpentine_2opt_1749921359.png)
+![2-Opt improved Using greedy nn Allocation with Serpentine initial tour](output/greedy_serpentine_2opt_1749986953.png)
 
 ---
 

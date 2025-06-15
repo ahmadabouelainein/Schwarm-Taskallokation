@@ -13,4 +13,4 @@ radius: 2.0
 allocator_type: greedy   # greedy or balanced
 start_bound_div: 5         # more condensed area to spawn the robots (1: No condensing, 10: Max condensing)
 
-init_tour_type: serpentine # nn or serpentine
+init_tour_type: nn # nn or serpentine

@@ -23,7 +23,7 @@ START_BOUND_DIV = float(CFG.get("start_bound_div", 1))  # >1 shrinks start area
 np.random.seed(42)
 
 
-def _shrink_bounds(bounds, div):
+def shrink_bounds(bounds, div):
     if div <= 1:
         return bounds
     x_min, x_max, y_min, y_max = bounds
@@ -48,7 +48,7 @@ def sample_coverage_points(bounds, radius):
     while y <= y_max - radius / 2 + 1e-9:
         shift = 0.0 if row % 2 == 0 else 0.5 * dx
         x = x_min + shift
-        while x <= x_max + 1e-9:
+        while x <= x_max + radius/2 + 1e-9:
             centres.append((x, y))
             x += dx
         y += dy
@@ -113,7 +113,7 @@ def draw_solution(ax, starts, groups, radius, cmap):
 
 
 def main():
-    start_bounds = _shrink_bounds(AREA_BOUNDS, START_BOUND_DIV)
+    start_bounds = shrink_bounds(AREA_BOUNDS, START_BOUND_DIV)
     starts = np.random.uniform(
         [start_bounds[0], start_bounds[2]],
         [start_bounds[1], start_bounds[3]],

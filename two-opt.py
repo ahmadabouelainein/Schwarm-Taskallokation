@@ -13,7 +13,7 @@ from allocator import (
     GreedyNearestAllocator,
     sample_coverage_points,
     draw_solution,
-    _shrink_bounds,
+    shrink_bounds,
     AREA_BOUNDS,
     RADIUS,
     N_ROBOTS,
@@ -112,7 +112,7 @@ def overlap_area(paths):
 
 
 def main():
-    start_bounds = _shrink_bounds(AREA_BOUNDS, START_BOUND_DIV)
+    start_bounds = shrink_bounds(AREA_BOUNDS, START_BOUND_DIV)
     starts = np.random.uniform(
         [start_bounds[0], start_bounds[2]],
         [start_bounds[1], start_bounds[3]],
