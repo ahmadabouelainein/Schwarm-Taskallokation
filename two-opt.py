@@ -4,7 +4,7 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 import yaml
-from shapely.geometry import Point
+from shapely.geometry import LineString
 from shapely.ops import unary_union
 from tqdm.auto import tqdm
 
@@ -100,16 +100,15 @@ def turn_sum(t):
         ang += float(np.arccos(np.clip(np.dot(v1, v2) / (n1 * n2), -1.0, 1.0)))
     return ang
 
-
-def overlap_area(paths):
-    disks = []
-    for p in paths:
-        for x, y in p:
-            disks.append(Point(x, y).buffer(RADIUS, resolution=8))
-    union = unary_union(disks)
-    sum_area = sum(d.area for d in disks)
-    return sum_area - union.area
-
+def overlap_area(paths, radius=RADIUS, resolution=8):
+    tubes = []
+    for tour in paths:
+        for a, b in zip(tour[:-1], tour[1:]):
+            seg_poly = LineString([a, b]).buffer(radius, resolution=resolution)
+            tubes.append(seg_poly)
+    sum_area = sum(poly.area for poly in tubes)
+    union_all = unary_union(tubes)
+    return sum_area - union_all.area
 
 def main():
     start_bounds = shrink_bounds(AREA_BOUNDS, START_BOUND_DIV)

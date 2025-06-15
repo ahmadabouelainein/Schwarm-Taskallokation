@@ -24,7 +24,7 @@ All parameters are read from **`config.yaml`** – *configure once, run anywhere
 
 ![Balanced Allocation example](output/balanced_allocator_1749987001.png)
 
-![Greedy Allocation example](output/greedy_allocator_1749986994.png)
+![Greedy Allocation example](output/greedy_allocator_)
 
 ### Initial‑tour builders
 
@@ -39,13 +39,13 @@ All parameters are read from **`config.yaml`** – *configure once, run anywhere
 | ---------------------- | ----------------------------------------------------- | --------- | -------------------------- | ------------------------------ |
 | **Initial Tour + 2‑opt** | Scanline ordering → local 2‑opt swaps (distance only) | Distance  | ✧✧ Fast (sub‑second/robot) | Quick refinement, large swarms |
 
-![2-Opt improved Coverage Using balanced Allocation with NN initial tour](output/balanced_nn_2opt_1749987009.png)
+![2-Opt improved Coverage Using balanced Allocation with NN initial tour](output/balanced_nn_2opt_1749988628.png)
 
-![2-Opt improved Using balanced Allocation with Serpentine initial tour](output/balanced_serpentine_2opt_1749987004.png)
+![2-Opt improved Using balanced Allocation with Serpentine initial tour](output/balanced_serpentine_2opt_1749988693.png)
 
-![2-Opt improved Coverage Using greedy NN Allocation with NN initial tour](output/greedy_nn_2opt_1749987022.png)
+![2-Opt improved Coverage Using greedy NN Allocation with NN initial tour](output/greedy_nn_2opt_1749988618.png)
 
-![2-Opt improved Using greedy nn Allocation with Serpentine initial tour](output/greedy_serpentine_2opt_1749986953.png)
+![2-Opt improved Using greedy nn Allocation with Serpentine initial tour](output/greedy_serpentine_2opt_1749988658.png)
 
 ---
 
