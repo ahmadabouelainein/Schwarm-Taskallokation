@@ -24,7 +24,7 @@ All parameters are read from **`config.yaml`** – *configure once, run anywhere
 
 ![Balanced Allocation example](output/balanced_allocator_1749987001.png)
 
-![Greedy Allocation example](output/greedy_allocator_)
+![Greedy Allocation example](output/greedy_allocator_1749986994.png)
 
 ### Initial‑tour builders
 
